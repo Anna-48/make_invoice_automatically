@@ -71,6 +71,7 @@ Sub invoiceMerHavingTrx()
     Next i
 End Sub
 
+------------------------------------
 
 'Invoicing merchants having no transaction but monthly subcription fee
 Sub invoiceMerHavingSubFee()
@@ -127,6 +128,7 @@ Sub invoiceMerHavingSubFee()
     Next i
 End Sub
 
+------------------------------------
 
 'Invoicing 34000313
 Sub invoiceMerWithRR()
