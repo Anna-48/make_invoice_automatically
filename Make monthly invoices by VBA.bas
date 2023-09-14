@@ -21,7 +21,7 @@ Sub invoiceMerHavingTrx()
     lastMerchant = invListSheet.Range("A" & invListSheet.Rows.Count).End(xlUp).Row
 
     Dim i As Integer
-    For i = 3 To lastMerchant
+    For i = 3 To lastMerchant Step 1
     
     'Except 34000313 (Merchant with RR)
         If invListSheet.Range("A" & i).Value = 34000313 Then
