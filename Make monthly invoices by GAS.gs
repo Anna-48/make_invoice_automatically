@@ -58,7 +58,7 @@ function merchant_with_transaction_and_monthly_fee(){
     // DELETE BLANKS
     var startRow = lastRow + 2;
     var numRows = totalRow - startRow;
-    if (startRow < totalRow - 1) {
+    if (startRow < totalRow) {
       newSheet.deleteRows(startRow,numRows);
     };
   };
