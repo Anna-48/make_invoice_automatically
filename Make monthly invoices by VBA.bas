@@ -64,11 +64,11 @@ Sub merchant_with_transaction_and_monthly_fee()
         Dim endRow As Integer
         endRow = totalRow - 1
         
-        If startRow < endRow Then
+        If startRow < totalRow Then
             newSheet.Rows(startRow & ":" & endRow).Delete
         End If
 
-    'PRINT
+    'PRINT (IF YOU WANT TO CHANGE THE FILE NAME, JUST TYPE THE NAME IN COLUMN "C" AND CHANGE THE VARIABLE file_Name FROM "A" TO "C"
         Dim file_Name As String
         file_Name = invListSheet.Range("A" & i).Value & ".pdf"
         newSheet.ExportAsFixedFormat Type:=xlTypePDF, _
@@ -125,7 +125,7 @@ Sub merchant_with_just_monthly_fee()
         newSheet.Range("F15").Value = newSheet.Range("F15").Value
         newSheet.Range("B19:D20").Value = newSheet.Range("B19:D20").Value
         
-    'PRINT
+    'PRINT (IF YOU WANT TO CHANGE THE FILE NAME, JUST TYPE THE NAME IN COLUMN "F" AND CHANGE THE VARIABLE file_Name FROM "D" TO "F"
         Dim file_Name As String
         file_Name = invListSheet.Range("D" & i).Value & ".pdf"
         newSheet.ExportAsFixedFormat Type:=xlTypePDF, _
