@@ -1,4 +1,6 @@
-/** @OnlyCurrentDoc */
+/** 
+  This is the link of Invoice Template: https://docs.google.com/spreadsheets/d/1G84U-NU6oaEWt4p3ky61MZFbkGY6ZtRnfbYMK-PuCaM/edit?usp=sharing
+*/
 
 // ADD A BUTTON IN THE TASKBAR
 function onOpen() {
