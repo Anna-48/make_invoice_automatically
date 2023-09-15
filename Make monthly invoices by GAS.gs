@@ -1,5 +1,7 @@
-/** 
-  This is the link of Invoice Template: https://docs.google.com/spreadsheets/d/1G84U-NU6oaEWt4p3ky61MZFbkGY6ZtRnfbYMK-PuCaM/edit?usp=sharing
+/** Note: 
+ * This is the link of Invoice Template: https://docs.google.com/spreadsheets/d/1G84U-NU6oaEWt4p3ky61MZFbkGY6ZtRnfbYMK-PuCaM/edit?usp=sharing
+ * These functions just help you create the invoices in new sheets.
+ * If you want to export to PDF files, please refer to this website: https://xfanatical.com/blog/print-google-sheet-as-pdf-using-apps-script/
 */
 
 // ADD A BUTTON IN THE TASKBAR
