@@ -1,40 +1,108 @@
 /** @OnlyCurrentDoc */
 
-function makeInvoice(){
+// ADD A BUTTON IN THE TASKBAR
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu('Invoice')
+                .addItem('MERCHANTS WITH TRANSACTION + MONTHLY FEE', 'merchant_with_transaction_and_monthly_fee') 
+                .addItem('MERCHANTS WITH JUST MONTHLY FEE', 'merchant_with_just_monthly_fee')
+                .addToUi(); 
+};
+
+// INVOICE TO MERCHANTS WITH TRANSACTION + MONTHLY FEE
+function merchant_with_transaction_and_monthly_fee(){
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var invTempSh = ss.getSheetByName("INV TEMPLATE");
-  var sumSh = ss.getSheetByName("SUM");
-  var LastRow = sumSh.getRange('L2').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
-  var merchants = sumSh.getRange(2,12,LastRow-1,2).getValues();
+  var invTempSheet = ss.getSheetByName("INV TEMPLATE");
+  var invListSheet = ss.getSheetByName("INV list");
+  var lastMerchant = invListSheet.getRange('A2').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+  var merchants = invListSheet.getRange(`A3:B${lastMerchant}`).getValues();
 
   for(var i = 0; i < merchants.length; i++){
     // SET MERCHANT
-    invTempSh.activate();
-    invTempSh.getRange('A12').setValue(merchants[i][1]);
+    invTempSheet.activate();
+    invTempSheet.getRange('B13').setValue(merchants[i][1]);
 
     // DUPLICATE SHEET
     var fileName = merchants[i][0];
-    var newSh = ss.duplicateActiveSheet();
-    newSh.setName(fileName);
+    var newSheet = ss.duplicateActiveSheet();
+    newSheet.setName(fileName);
     
-    // CONVERT FORMULAS TO VALUES
-    var range1 = newSh.getRange('H7:H8');
+    // CONVERT FORMULAS (RELATED TO DATE/TIME) TO VALUES
+    var range1 = newSheet.getRange('B9');
     range1.copyTo(range1, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
     
-    var range2 = newSh.getRange('C16:E17');
+    var range2 = newSheet.getRange('F12');
     range2.copyTo(range2, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
 
-    var range3 = newSh.getRange('A44');
+    var range3 = newSheet.getRange('F15');
     range3.copyTo(range3, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
 
-    var range4 = newSh.getRange('A47:H77');
+    var range4 = newSheet.getRange('B19:D20');
     range4.copyTo(range4, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
     
+    var range5 = newSheet.getRange('B30');
+    range5.copyTo(range5, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+
+    var range6 = newSheet.getRange('B32:G42');
+    range6.copyTo(range6, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+
+    // FIND ROWs
+    var maxRow = newSheet.getMaxRows();
+    var totalCell = newSheet.getRange(`C${maxRow}`).getNextDataCell(SpreadsheetApp.Direction.UP);
+    var totalRow = totalCell.getRow();
+    var lastRow = totalCell.getNextDataCell(SpreadsheetApp.Direction.UP).getRow();
+
     // DELETE BLANKS
-    var startRow = newSh.getRange("B80").getNextDataCell(SpreadsheetApp.Direction.UP).getRow() + 2;
-    var numRows = 79 - startRow;
-    if (startRow < 79) {
-      newSh.deleteRows(startRow,numRows)
+    var startRow = lastRow + 2;
+    var numRows = totalRow - startRow;
+    if (startRow < totalRow - 1) {
+      newSheet.deleteRows(startRow,numRows);
     };
+  };
+}
+
+// INVOICE TO MERCHANTS WITH JUST MONTHLY FEE
+function merchant_with_just_monthly_fee(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var invTempSheet = ss.getSheetByName("INV TEMPLATE");
+  var invListSheet = ss.getSheetByName("INV list");
+  var lastMerchant = invListSheet.getRange('D2').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+  var merchants = invListSheet.getRange(`D3:E${lastMerchant}`).getValues();
+
+  for(var i = 0; i < merchants.length; i++){
+    // SET MERCHANT
+    invTempSheet.activate();
+    invTempSheet.getRange('B13').setValue(merchants[i][1]);
+
+    // DUPLICATE SHEET
+    var fileName = merchants[i][0];
+    var newSheet = ss.duplicateActiveSheet();
+    newSheet.setName(fileName);
+    
+    // CONVERT FORMULAS (RELATED TO DATE/TIME) TO VALUES
+    var range1 = newSheet.getRange('B9');
+    range1.copyTo(range1, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+    
+    var range2 = newSheet.getRange('F12');
+    range2.copyTo(range2, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+
+    var range3 = newSheet.getRange('F15');
+    range3.copyTo(range3, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+
+    var range4 = newSheet.getRange('B19:D20');
+    range4.copyTo(range4, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+    
+    var range5 = newSheet.getRange('B30');
+    range5.copyTo(range5, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+
+    var range6 = newSheet.getRange('B32:G42');
+    range6.copyTo(range6, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+
+    // FIND ROWs
+    var maxRow = newSheet.getMaxRows();
+
+    // DELETE BLANKS
+    var startRow = 30;
+    var numRows = maxRow - startRow;
+    newSheet.deleteRows(startRow,numRows); 
   };
 }
