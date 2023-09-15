@@ -1,6 +1,7 @@
 Attribute VB_Name = "makeInvoice"
-'Invoicing merchants having transactions during the month
-Sub invoiceMerHavingTrx()
+
+' INVOICE TO MERCHANTS WITH TRANSACTION + MONTHLY FEE
+Sub merchant_with_transaction_and_monthly_fee()
     
     'CHOOSE FOLDER TO SAVE FILES
     Dim folderPath As String
@@ -22,18 +23,12 @@ Sub invoiceMerHavingTrx()
 
     Dim i As Integer
     For i = 3 To lastMerchant Step 1
-    
-    'Except 34000313 (Merchant with RR)
-        If invListSheet.Range("A" & i).Value = 34000313 Then
-            ThisWorkbook.Sheets("RR TEMPLATE").Activate
-        Else
         
-        'SET MERCHANT
-            invTempSheet.Activate
-            invTempSheet.Range("A12").Value = invListSheet.Range("B" & i).Value
-        End If
+    'SET MERCHANT
+        invTempSheet.Activate
+        invTempSheet.Range("B13").Value = invListSheet.Range("B" & i).Value
         
-        'DUPLICATE SHEET
+    'DUPLICATE SHEET
         Dim lastSheet As Worksheet
         Set lastSheet = ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count)
         ActiveSheet.Copy After:=lastSheet
@@ -43,25 +38,39 @@ Sub invoiceMerHavingTrx()
         newSheet.Name = invListSheet.Range("A" & i).Value
    
     'CONVERT FORMULAS TO VALUES
-        newSheet.Range("H7:H8").Value = newSheet.Range("H7:H8").Value
-        newSheet.Range("C16:E17").Value = newSheet.Range("C16:E17").Value
-        newSheet.Range("A44").Value = newSheet.Range("A44").Value
-        newSheet.Range("A47:H77").Copy
-        newSheet.Range("A47:H77").PasteSpecial xlPasteValues
+        newSheet.Range("B9").Value = newSheet.Range("B9").Value
+        newSheet.Range("F12").Value = newSheet.Range("F12").Value
+        newSheet.Range("F15").Value = newSheet.Range("F15").Value
+        newSheet.Range("B19:D20").Value = newSheet.Range("B19:D20").Value
+        newSheet.Range("B32").Value = newSheet.Range("B32").Value
+        newSheet.Range("B34:G44").Copy
+        newSheet.Range("B34:G44").PasteSpecial xlPasteValues
         Application.CutCopyMode = False
-        newSheet.Range("A42").Select
+        newSheet.Range("A30").Select
         
     'DELETE BLANKS
-        Dim startRow As Integer
-        startRow = newSheet.Range("B80").End(xlUp).Row + 2
+        Dim totalCell As Range
+        Set totalCell = newSheet.Range("C" & newSheet.Rows.Count).End(xlUp)
         
-        If startRow <= 78 Then
-            newSheet.Rows(startRow & ":" & 78).Delete
+        Dim totalRow As Integer
+        totalRow = totalCell.Row
+        
+        Dim lastRow As Integer
+        lastRow = totalCell.End(xlUp).Row
+        
+        Dim startRow As Integer
+        startRow = lastRow + 2
+        
+        Dim endRow As Integer
+        endRow = totalRow - 1
+        
+        If startRow < endRow Then
+            newSheet.Rows(startRow & ":" & endRow).Delete
         End If
 
     'PRINT
         Dim file_Name As String
-        file_Name = invListSheet.Range("C" & i).Value & ".pdf"
+        file_Name = invListSheet.Range("A" & i).Value & ".pdf"
         newSheet.ExportAsFixedFormat Type:=xlTypePDF, _
                                      Filename:=folderPath & "\" & file_Name, _
                                      Quality:=xlQualityStandard, _
@@ -71,10 +80,9 @@ Sub invoiceMerHavingTrx()
     Next i
 End Sub
 
-------------------------------------
 
-'Invoicing merchants having no transaction but monthly subcription fee
-Sub invoiceMerHavingSubFee()
+' INVOICE TO MERCHANTS WITH JUST MONTHLY FEE
+Sub merchant_with_just_monthly_fee()
     
     'CHOOSE FOLDER TO SAVE FILES
     Dim folderPath As String
@@ -92,14 +100,14 @@ Sub invoiceMerHavingSubFee()
     Set invListSheet = ThisWorkbook.Sheets("INV list")
     
     Dim lastMerchant As Integer
-    lastMerchant = invListSheet.Range("E" & invListSheet.Rows.Count).End(xlUp).Row
+    lastMerchant = invListSheet.Range("D" & invListSheet.Rows.Count).End(xlUp).Row
 
     Dim i As Integer
     For i = 3 To lastMerchant
     
     'SET MERCHANT
         invTempSheet.Activate
-        invTempSheet.Range("A12").Value = invListSheet.Range("F" & i).Value
+        invTempSheet.Range("B13").Value = invListSheet.Range("E" & i).Value
        
     'DUPLICATE SHEET
         Dim lastSheet As Worksheet
@@ -109,15 +117,17 @@ Sub invoiceMerHavingSubFee()
         
         Dim newSheet As Worksheet
         Set newSheet = ActiveSheet
-        newSheet.Name = invListSheet.Range("E" & i).Value
+        newSheet.Name = invListSheet.Range("D" & i).Value
    
     'CONVERT FORMULAS TO VALUES
-        newSheet.Range("H7:H8").Value = newSheet.Range("H7:H8").Value
-        newSheet.Range("C16:E17").Value = newSheet.Range("C16:E17").Value
-
+        newSheet.Range("B9").Value = newSheet.Range("B9").Value
+        newSheet.Range("F12").Value = newSheet.Range("F12").Value
+        newSheet.Range("F15").Value = newSheet.Range("F15").Value
+        newSheet.Range("B19:D20").Value = newSheet.Range("B19:D20").Value
+        
     'PRINT
         Dim file_Name As String
-        file_Name = invListSheet.Range("G" & i).Value & ".pdf"
+        file_Name = invListSheet.Range("D" & i).Value & ".pdf"
         newSheet.ExportAsFixedFormat Type:=xlTypePDF, _
                                      Filename:=folderPath & "\" & file_Name, _
                                      Quality:=xlQualityStandard, _
@@ -127,53 +137,3 @@ Sub invoiceMerHavingSubFee()
                                      From:=1, To:=1
     Next i
 End Sub
-
-------------------------------------
-
-'Invoicing 34000313
-Sub invoiceMerWithRR()
-    
-    'CHOOSE FOLDER TO SAVE FILES
-    Dim folderPath As String
-    With Application.FileDialog(msoFileDialogFolderPicker)
-        If .Show = -1 Then
-            folderPath = .SelectedItems(1)
-        Else
-            Exit Sub
-        End If
-    End With
-    
-    'SELECT SHEET
-    Dim RRSheet As Worksheet
-    Set RRSheet = ThisWorkbook.Sheets("34000313")
-   
-    'CONVERT FORMULAS TO VALUES
-        RRSheet.Range("H7:H8").Value = RRSheet.Range("H7:H8").Value
-        RRSheet.Range("C16:E17").Value = RRSheet.Range("C16:E17").Value
-        RRSheet.Range("A44").Value = RRSheet.Range("A44").Value
-        RRSheet.Range("A47:H77").Copy
-        RRSheet.Range("A47:H77").PasteSpecial xlPasteValues
-        Application.CutCopyMode = False
-        RRSheet.Range("A42").Select
-        
-    'DELETE BLANKS
-        
-        Dim startRow As Integer
-        startRow = RRSheet.Range("B80").End(xlUp).Row + 2
-        
-        If startRow <= 78 Then
-            RRSheet.Rows(startRow & ":" & 78).Delete
-        End If
-        
-    'PRINT
-        Dim file_Name As String
-        file_Name = RRSheet.Name
-        RRSheet.ExportAsFixedFormat Type:=xlTypePDF, _
-                                    Filename:=folderPath & "\" & file_Name, _
-                                    Quality:=xlQualityStandard, _
-                                    IncludeDocProperties:=True, _
-                                    IgnorePrintAreas:=False, _
-                                    OpenAfterPublish:=False
-    
-End Sub
-
