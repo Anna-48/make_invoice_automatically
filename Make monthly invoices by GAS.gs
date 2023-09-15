@@ -43,10 +43,10 @@ function merchant_with_transaction_and_monthly_fee(){
     var range4 = newSheet.getRange('B19:D20');
     range4.copyTo(range4, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
     
-    var range5 = newSheet.getRange('B30');
+    var range5 = newSheet.getRange('B38');
     range5.copyTo(range5, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
 
-    var range6 = newSheet.getRange('B32:G42');
+    var range6 = newSheet.getRange('B40:G50');
     range6.copyTo(range6, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
 
     // FIND ROWs
@@ -95,10 +95,10 @@ function merchant_with_just_monthly_fee(){
     var range4 = newSheet.getRange('B19:D20');
     range4.copyTo(range4, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
     
-    var range5 = newSheet.getRange('B30');
+    var range5 = newSheet.getRange('B38');
     range5.copyTo(range5, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
 
-    var range6 = newSheet.getRange('B32:G42');
+    var range6 = newSheet.getRange('B40:G50');
     range6.copyTo(range6, SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
 
     // FIND ROWs
