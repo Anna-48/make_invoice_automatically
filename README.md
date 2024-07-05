@@ -5,7 +5,6 @@ This project is used to create monthly invoices automatically. It can help you s
 I wrote the program in both Javascript (which is used on Google Sheet) and VBA (which is used on Excel).
 The sample data is also uploaded, so you can try it on your own.
 
-   
 
 **How to run the program**
 
