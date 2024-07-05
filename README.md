@@ -6,6 +6,7 @@ I wrote the program in both Javascript (which is used on Google Sheet) and VBA (
 The sample data is also uploaded, so you can try it on your own.
 
 
+
 **How to run the program**
 
 With Excel, you need to download 'Invoice Template' file, then click the buttons on 'INV list' sheet to see how the program runs. 
